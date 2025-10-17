@@ -1,11 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart' ;
+import 'package:personal_portfolio_app/provider/theme_provider.dart' ;
 
-class Header extends StatelessWidget {
+
+class Header extends ConsumerStatefulWidget {
   const Header({super.key});
 
   @override
+  ConsumerState<Header> createState() => _HeaderState();
+}
+
+class _HeaderState extends ConsumerState<Header> {
+  @override
   Widget build(BuildContext context) {
+    final themeMode = ref.watch(themeProvider) ;
+    final isDarkMode  = themeMode == ThemeMode.dark ;
     return Center(
       child:Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -17,36 +27,31 @@ class Header extends StatelessWidget {
                   radius: 70, 
                   backgroundImage: AssetImage('assets/images/Douglas.jpeg'),
               ),
-              // SizedBox(width:0.4),
               Padding(
                 padding: const EdgeInsets.only(top: 65 , right: 2),
                 child: GestureDetector(
                   onTap: () {
-                    print('Theme toggle pressed!');
+                  ref.read(themeProvider.notifier).toggleThme();
                   },
                   child: Container(
-                    width: 35,
-                    height: 35,
+                    width: 30,
+                    height: 30,
                     decoration: BoxDecoration(
-                      color: Colors.black,
-                      // color: isDarkMode
-                      //     ? Colors.yellow.withOpacity(0.2)
-                      //     : Colors.blue.withOpacity(0.15),
+                      color: isDarkMode
+                          ? Colors.white
+                          : Colors.black,
                       shape: BoxShape.circle,
-                      border: Border.all(
-                        color:  Colors.white,
-                        // color: isDarkMode ? Colors.amber : Colors.blueAccent,
-                        width: 1.5,
-                      ),
+                      // border: Border.all(
+                      //   color: isDarkMode ? Colors.amber : Colors.blueAccent,
+                      //   width: 1,
+                      // ),
                     ),
                     child: Icon(
-                      FontAwesomeIcons.solidSun,
-                      // isDarkMode
-                      //     ? FontAwesomeIcons.solidSun 
-                      //     : FontAwesomeIcons.solidMoon, 
-                      // color: isDarkMode ? Colors.amber : Colors.blueAccent,
-                        color: Colors.white ,
-                      size: 22,
+                      isDarkMode
+                          ? FontAwesomeIcons.solidSun 
+                          : FontAwesomeIcons.solidMoon, 
+                      color: isDarkMode ? Colors.black : Colors.white,
+                      size: 18,
                     ),
                   ),
                 ),
